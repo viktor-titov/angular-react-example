@@ -4,4 +4,7 @@
     <h3>Wrapper Props count: {{count}}</h3>
 </div>
 
-<div #boxForReact></div>
+@if (loading) {
+    <div>loading ...</div>
+} 
+<div class="box" #boxForReact></div>

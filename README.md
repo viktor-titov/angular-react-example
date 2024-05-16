@@ -7,7 +7,7 @@
 ## Необходимые пакеты
 
 ```bash
-npm i --save -D react react-dom @types/react @types/react-dom
+npm i --save react react-dom @types/react @types/react-dom
 ```
 
 ## Подготовка
@@ -22,6 +22,39 @@ npm i --save -D react react-dom @types/react @types/react-dom
 
 ```bash
 npm run start
+```
+
+### Сборка и запуск в контейнере.
+
+делаем билд контейнера командой:
+```bash
+docker build -t angular-react-example .
+```
+Проверяем командой docker image ls что образ нашего контейнера появился в списке доступных:
+
+![alt text](/assets/image-4.png)
+
+Запускаем команду:
+
+```bash
+docker run -d -p 8080:80 angular-react-example:latest
+```
+
+
+И проверяем запуск приложения по адресу http://localhost:8080/
+
+#### Или же командой:
+
+Сборка и запуск контейнера:
+
+```bash
+make run
+```
+
+Остановка контейнера:
+
+```bash
+make stop
 ```
 
 # Интересное решение. Перенос интеграции React компонента в @Directive angular
@@ -132,6 +165,20 @@ export class LazyReactComponentDirective<Comp extends ElementType> {
 }
 ```
 
+![alt text](/assets/image.png)
+
+Поисле реализации ленивой загрузки получилось отложить загрузку только одного файла размером 930kB
+
+![подгрузка бандла реакт после попадания на страницу с комп.](/assets/image-1.png)
+
+Еще собрал в образе продакшн бандл там такой результат:
+
+![](./assets/Peek%202024-05-16%2017-36.gif)
+
+![alt text](/assets/image-3.png)
+
+Итого 134kB
+
 # Где можно подсмотреть еще реализации и подходы к решению проблемы
 
 ## Microsoft package
@@ -148,7 +195,12 @@ export class LazyReactComponentDirective<Comp extends ElementType> {
 *Цитата из статьи:*
 > Важно понимать, что при таком подходе к 85КБ Angular добавляется почти 40КБ кода react и react-dom. Это может оказать существенное влияние на скорость работы приложения. Я рекомендую рассмотреть использование миниатюрного Preact, который весит всего 3КБ. Его интеграция почти не отличается.
 
+## Интеграция React и AngularJS через Webpack Module Federation
+
+Есть еще статья глубокой интеграции. Понять до конца суть не смог, что то связанное со сборкой webpack верней его фичей [Module Federation](https://webpack.js.org/concepts/module-federation/)
+
 # References
 
 - [Простой пример взятый за основу](https://web-world.medium.com/how-to-use-react-web-components-in-angular-b3ac7e39fd17)
 - [Статья на Habr с описание подхода реализованый в примере](https://habr.com/ru/articles/468063/)
+- [Статья с пример Директивы](https://netbasal.com/using-react-in-angular-applications-1bb907ecac91)
