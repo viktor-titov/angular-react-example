@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { WrapperComponent } from '../wrapper/wrapper.component';
 
 @Component({
   selector: 'app-parent',
   standalone: true,
-  imports: [],
+  imports: [WrapperComponent],
   templateUrl: './parent.component.html',
   styleUrl: './parent.component.scss'
 })

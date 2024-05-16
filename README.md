@@ -25,3 +25,18 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Необходимые пакеты
+
+```bash
+npm i --save -D react react-dom @types/react @types/react-dom
+```
+
+## Подготовка
+
+
+В первую очередь, важно понимать, что React по умолчанию не требует никаких особенных условий при сборке. Если не использовать JSX, а ограничиться вызовами createElement, то никаких шагов предпринимать не придется, все просто будет работать из коробки.
+
+Но, конечно, мы привыкли использовать JSX и не хочется терять его. К счастью, по умолчанию Angular использует TypeScript, который умеет трансформировать JSX в вызовы функции. **Нужно просто добавить флаг компилятора --jsx=react или в tsconfig.json в разделе compilerOptions дописать строку "jsx": "react".**
+
+> по умолчанию Angular использует TypeScript, который умеет трансформировать JSX в вызовы функции

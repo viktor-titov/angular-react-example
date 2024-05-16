@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Host, inject, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
+
+import { ComponentProps, createElement, ElementType } from 'react';
+import { createRoot, Root } from 'react-dom/client';
+import { Counter } from "../react-components/counter/counter"
+
 
 @Component({
   selector: 'app-wrapper',
@@ -7,21 +12,52 @@ import { Component } from '@angular/core';
   templateUrl: './wrapper.component.html',
   styleUrl: './wrapper.component.scss'
 })
-export class WrapperComponent {
-  // @ViewChild(containerElementRef, { static: true }) containerRef!: ElementRef;
-
-  // @Input() public counter = 10;
-  // @Output() public componentClick = new EventEmitter<void>();
-
-  // private root = createRoot(inject(ElementRef).nativeElement)
+export class WrapperComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
+  private root?: Root;
   
-  // ngOnChanges() {
-  //   this.root.render(createElement(CustomReactButton))
-  // }
+  @ViewChild('boxForReact', { static: true }) containerRef?: ElementRef;
+  
+  ngOnInit(): void {
+    console.log('::ngOnInit');
+    this.initRoot()
+  }
 
-  // ngOnDestroy() {
-  //   this.root.unmount();
-  // }
+  ngAfterViewInit() {
+    console.log('::ngAfterViewInit');
+    this.renderReactComponent();
+  }
+
+  ngOnChanges() {
+    console.log('::ngOnChanges');
+    this.renderReactComponent()
+  }
+
+  ngOnDestroy() {
+    console.log('::ngOnDestroy');
+    if (this.root) {
+      this.root.unmount();
+    }
+  }
+
+  private initRoot() {
+    if (this.root) {
+      return;
+    }
+
+    if (!this.containerRef) {
+      return
+    }
+
+    if (!this.root) {
+     this.root = createRoot(this.containerRef.nativeElement);
+    }
+  }
+  
+  private renderReactComponent() {
+    if (this.root) {
+      this.root.render(createElement(Counter))
+    }
+  }
 }
 
 
