@@ -1,28 +1,46 @@
 import * as React from 'react';
 import { FunctionComponent, useEffect, useRef, useState } from 'react';
 
-export const Counter: FunctionComponent = () => {
+export interface CounterProps {
+  counter: number;
+  onClick?: () => void;
+}
 
-  const counter = useRef<number | null>(null)
+export const Counter: FunctionComponent<CounterProps> = (props: CounterProps) => {
+  const {counter, onClick} = props;
+  const counterInner = useRef<ReturnType<typeof setInterval> | null>(null)
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    counter.current = +setInterval(() => {
+    console.log(':::useEffect:props', counter, onClick);
+    counterInner.current = setInterval(() => {
       setCount(count + 1);
-    }, 3000);
+    }, 1000);
 
     return () => {
-      if (counter.current) {
-        clearInterval(counter.current);
-        counter.current = null;
+      if (counterInner.current) {
+        clearInterval(counterInner.current);
+        counterInner.current = null;
       }
     };
   });
 
+  const handleClick = () => {
+    console.log('react handleClick');
+
+    if (onClick) {
+      onClick()
+    }
+  }
+
   return (
     <div>
         <h3>React component "Counter"</h3>
-        <div>State counter: {count}</div>
+        <div>State counterInner: {count}</div>
+        <div>Props counter: {counter}</div>
+        <div>
+          <button type="button" onClick={handleClick}>click to increase</button>
+        </div>
     </div>
   );
 };

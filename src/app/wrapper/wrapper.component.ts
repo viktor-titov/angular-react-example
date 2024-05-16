@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Host, inject, OnChanges, OnDestro
 
 import { ComponentProps, createElement, ElementType } from 'react';
 import { createRoot, Root } from 'react-dom/client';
-import { Counter } from "../react-components/counter/counter"
+import { Counter, CounterProps } from "../react-components/counter/counter"
 
 
 @Component({
@@ -39,6 +39,13 @@ export class WrapperComponent implements OnInit, OnChanges, OnDestroy, AfterView
     }
   }
 
+  public count: number = 0;
+  public handleClick() {
+    this.count++
+    console.log('::handleClick:inAngularWRapper:this', this);
+    this.renderReactComponent();
+  }
+
   private initRoot() {
     if (this.root) {
       return;
@@ -53,9 +60,16 @@ export class WrapperComponent implements OnInit, OnChanges, OnDestroy, AfterView
     }
   }
   
+  private makeProps(): CounterProps {
+    return {
+      counter: this.count,
+      onClick: this.handleClick.bind(this)
+    }
+  }
+
   private renderReactComponent() {
     if (this.root) {
-      this.root.render(createElement(Counter))
+      this.root.render(createElement(Counter, this.makeProps()))
     }
   }
 }
